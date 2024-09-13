@@ -9,7 +9,3 @@ class User(SQLModel, table=True):
     secret_name: str
     age: Optional[int] = None
 
-
-def create_user(user: User, session: Session) -> User:
-    with Session(engine) as session:
-        session.add(user)

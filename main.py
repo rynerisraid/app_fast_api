@@ -1,7 +1,7 @@
 from typing import Union
 from fastapi import FastAPI
 from dotenv import load_dotenv
-from app.services.auth.routers import router as auth_router
+from app.services.user.routers import router as user_router
 from sqlmodel import SQLModel
 from app.database import engine
 from contextlib import asynccontextmanager
@@ -10,7 +10,7 @@ load_dotenv()
 
 
 app = FastAPI()
-app.include_router(auth_router, prefix="/api/v1/auth",tags=["auth"])
+app.include_router(user_router, prefix="/api/v1/user",tags=["user"])
 
 
 

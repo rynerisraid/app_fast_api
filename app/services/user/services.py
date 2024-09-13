@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 from ...config import Settings
-from . import password
 import jwt
 from passlib.context import CryptContext
 
@@ -28,3 +27,14 @@ def get_password_hash(password):
 
 def verify_password(password, hashed_password):
     return pwd_context.verify(password, hashed_password)
+
+
+from sqlalchemy.orm import Session
+from app.models.user import User
+
+class UserService:
+    def create_user(self, db: Session, user: User) -> User:
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        return user
