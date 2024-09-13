@@ -1,5 +1,6 @@
 
 .pyvenv/*
+.pyenv/*
 
 __pycache__/*
 
