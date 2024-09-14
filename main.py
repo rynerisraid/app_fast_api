@@ -18,10 +18,8 @@ app.include_router(user_router, prefix="/api/v1/user",tags=["user"])
 
 
 
-@asynccontextmanager
-def lifespan(app: FastAPI):
-    SQLModel.metadata.create_all(engine)
-    
+
+
 
 @app.get('/')
 async def read_root():

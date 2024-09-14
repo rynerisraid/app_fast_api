@@ -17,7 +17,7 @@ async def ping():
 # 用户注册
 @router.post("/register", response_model=Message)
 def register(user: User):
-    db_user =  UserService().create_user(user)
+    db_user =  UserService(engine).create_user(user)
     if db_user:
         return Message(message="注册成功")
     else:
@@ -25,8 +25,16 @@ def register(user: User):
 
 
 # 重置密码
-
+@router.post("/rest_password", response_model=Message)  
+def rest_password():
+    pass
 
 # 用户登录
+@router.post("/login",response_model=Message)
+def login():
+    pass
 
 # 用户退出
+@router.post("/logout",response_model=Message)
+def logout():
+    pass

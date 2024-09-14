@@ -9,3 +9,5 @@ class User(SQLModel, table=True):
     mail: str
     age: Optional[int] = None
 
+
+SQLModel.metadata.create_all(engine)
