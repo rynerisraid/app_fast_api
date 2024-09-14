@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from datetime import datetime, timedelta
-from app.services.user import UserService
-from app.models.user import User
-from app.schemas.message import Message
 
+from .services import UserService
+from .user import User
+from app.schemas.message import Message
+from app.database import engine
 
 router = APIRouter()
 

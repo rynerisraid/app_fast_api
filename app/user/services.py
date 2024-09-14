@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
-from ...config import Settings
+from ..config import Settings
 import jwt
 from passlib.context import CryptContext
+from sqlalchemy.orm import Session
+from app.user.user import User
 
 
 SECRET_KEY = Settings().SECRET_KEY
@@ -29,12 +31,16 @@ def verify_password(password, hashed_password):
     return pwd_context.verify(password, hashed_password)
 
 
-from sqlalchemy.orm import Session
-from app.models.user import User
+
 
 class UserService:
-    def create_user(self, db: Session, user: User) -> User:
-        db.add(user)
-        db.commit()
-        db.refresh(user)
+
+    def __init__(self,db: Session) -> None:
+        self.db: Session = db
+        pass
+
+    def create_user(self, user: User) -> User:
+        self.db.add(user)
+        self.commit()
+        self.refresh(user)
         return user
