@@ -12,11 +12,16 @@ class User(SQLModel, table=True):
     password: str = Field(nullable=False)
     status: str = Field(default="active")
     is_super_user: bool = Field(default=False)
+    token: Optional[str] = Field(default=None, nullable=True)
     created_time: Optional[datetime] = Field(default=datetime.now(), nullable=True)
     updated_time: Optional[datetime] = Field(default=datetime.now(), nullable=True)
+    last_login_time: Optional[datetime] = Field(default=None, nullable=True)
+
 
     def __repr__(self) -> str:
         return f"<User username={self.username} email={self.email}>"
+
+
 
 
 SQLModel.metadata.create_all(engine)
