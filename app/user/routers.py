@@ -16,8 +16,8 @@ async def ping():
 
 # 用户注册
 @router.post("/register", response_model=Message)
-def register(user: User):
-    db_user =  UserService().create_user(user)
+async def register(user: User):
+    db_user =  await UserService(engine).create_user(user)
     if db_user:
         return Message(message="注册成功")
     else:
