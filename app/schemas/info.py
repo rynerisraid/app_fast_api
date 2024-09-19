@@ -12,3 +12,9 @@ class LoginInfo(BaseModel):
     status_code: int
     message: str
     data: dict
+
+class ResponseInfo(BaseModel):
+    status_code: int
+    message: str
+    data: dict
+

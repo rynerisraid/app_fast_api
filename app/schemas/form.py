@@ -11,6 +11,12 @@ class RegisterForm(BaseModel):
     password: str
     email: str
     phone: str
-    address: str
-    first_name: str
-    last_name: str
+
+class ResetPasswordForm(BaseModel):
+    password: str
+    confirm_password: str
+
+class ChangePasswordForm(BaseModel):
+    old_password: str
+    new_password: str
+    confirm_password: str
