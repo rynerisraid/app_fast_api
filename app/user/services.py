@@ -2,9 +2,10 @@ from datetime import datetime, timedelta
 from ..config import Settings
 import jwt
 from passlib.context import CryptContext
-from sqlmodel import Session
+from sqlmodel import Session, select
 from app.user.user import User
 from sqlalchemy import Engine
+from fastapi import HTTPException
 
 
 SECRET_KEY = Settings().SECRET_KEY
@@ -41,7 +42,41 @@ class UserService:
         pass
 
     def create_user(self, user: User) -> User:
-        with Session(self.engine) as session:
-            session.add(user)
-            session.commit()
+        user_res =  self.get_user(user) 
+        if user_res is None:
+            with Session(self.engine) as session:
+                try:
+                    session.add(user)
+                except Exception as e:
+                    raise HTTPException(status_code=400, detail=e)         
+                finally:
+                    session.commit()
+        else:
+            raise HTTPException(status_code=400, detail=user_res)
         return user
+    
+
+    def get_user(self, user: User) -> User:
+        res = None
+        with Session(self.engine) as session:
+            
+            try:
+                statement = select(User).where(User.username == user.username)
+                user = session.exec(statement).first()
+                if user is not None:
+                    res = "用户名已存在"
+                statement = select(User).where(User.email == user.email)
+                user = session.exec(statement).first()
+                if user is not None:
+                    res = "邮箱已存在"
+                statement = select(User).where(User.phone == user.phone)
+                user = session.exec(statement).first()
+                if user is not None:
+                    res = "手机号已存在"
+                
+            except Exception as e:
+                return e
+            finally:
+                session.commit()
+        return res
+                
