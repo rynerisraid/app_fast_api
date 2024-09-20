@@ -4,8 +4,6 @@ import jwt
 from passlib.context import CryptContext
 from sqlmodel import Session, select
 from app.user.user import User
-from app.schemas.info import LoginInfo
-from app.schemas.form import LoginForm, RegisterForm
 from sqlalchemy import Engine
 from fastapi import HTTPException,status
 
@@ -56,16 +54,17 @@ class UserService:
                     session.commit()
         else:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=user_res)
+        user.password = None
         return user
     
 
-    def login(self, login_info: LoginForm) -> LoginInfo:
-        user_res =  self.get_user(login_info)
+    def login(self, user: User) -> User:
+        user_res =  self.get_user(user)
         if user_res is None:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="用户名或密码错误")
         else:
-            if verify_password(login_info.password, user_res.password):
-                token = create_access_token(data=login_info, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+            if verify_password(user.password, user_res.password):
+                token = create_access_token(data=user.username, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
                 user_res.token = token
                 user_res.last_login_time = datetime.now()
                 with Session(self.engine) as session:
@@ -75,9 +74,9 @@ class UserService:
                         session.refresh(user_res)    
                     except Exception as e:
                         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=e)
-
-        return LoginInfo(status_code=status.HTTP_200_OK,message="登录成功",data={"token":token})
-    
+                    finally:
+                        user_res.password = None
+        return user_res
 
 
 

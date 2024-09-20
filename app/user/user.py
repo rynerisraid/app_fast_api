@@ -24,4 +24,3 @@ class User(SQLModel, table=True):
 
 
 
-SQLModel.metadata.create_all(engine)
