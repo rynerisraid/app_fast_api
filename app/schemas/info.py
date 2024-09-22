@@ -1,8 +1,8 @@
-from pydantic import BaseModel
+from fastapi.responses import JSONResponse
 
 
-class ResponseInfo(BaseModel):
+class ResponseInfo(JSONResponse):
     status_code: int
-    message: str
+    msg: str
     data: dict
 

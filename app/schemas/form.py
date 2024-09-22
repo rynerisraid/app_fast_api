@@ -12,9 +12,11 @@ class RegisterForm(BaseModel):
     email: str
     phone: str
 
-class GenRestCodeForm(BaseModel):
+class GenCodeForm(BaseModel):
+    username: str
     email: str
     phone: str
+
 
 class ResetPasswordForm(BaseModel):
     username: str
