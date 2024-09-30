@@ -85,3 +85,11 @@ async def create_user(user: UserCreate):
 ```
 uvicorn main:app --reload
 ```
+
+
+# pip安装
+
+```cmd
+pip install tensorflow==2.16.0rc0 -i  http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+pip install modelscope==1.13.1 -i  http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+```
